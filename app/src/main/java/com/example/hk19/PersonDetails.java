@@ -2,10 +2,10 @@ package com.example.hk19;
 
 public class PersonDetails {
     private String personName;
-    private int personNumber;
+    private String personNumber;
     public PersonDetails() {
     }
-    public PersonDetails(String personName, int personNumber) {
+    public PersonDetails(String personName, String personNumber) {
         this.personName = personName;
         this.personNumber = personNumber;
     }
@@ -15,10 +15,10 @@ public class PersonDetails {
     public void setPersonName(String personName) {
         this.personName = personName;
     }
-    public int getPersonNumber() {
+    public String getPersonNumber() {
         return personNumber;
     }
-    public void setPersonNumber(int personNumber) {
+    public void setPersonNumber(String personNumber) {
         this.personNumber = personNumber;
     }
 }

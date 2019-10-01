@@ -6,9 +6,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MyDBHandler extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String DATABASE_NAME = "persons.db";
     public static final String TABLE_PERSONS = "persons";
     public static final String COLUMN_ID="_id";
@@ -30,7 +33,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
         String query = " CREATE TABLE " + TABLE_PERSONS + " ( " +
                         COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         COLUMN_PERSON_NAME + " TEXT , " +
-                        COLUMN_PERSON_NUMBER + " INTEGER " +
+                        COLUMN_PERSON_NUMBER + " TEXT " +
                         ");" ;
         sqLiteDatabase.execSQL(query);
     }
@@ -44,37 +47,39 @@ public class MyDBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void updatePerson(String personName,int newVal){
+    public void updatePerson(String personName,String newVal){
         SQLiteDatabase db = getWritableDatabase();
         String query =  " UPDATE " + TABLE_PERSONS +
-                        " SET " + COLUMN_PERSON_NUMBER + "=" + newVal +
+                        " SET " + COLUMN_PERSON_NUMBER + "=\"" + newVal + "\"" +
                         " WHERE " + COLUMN_PERSON_NAME + "=\"" + personName + "\";";
         db.execSQL(query);
     }
 
-    public int searchDatabase(String personName){
-        int val =0;
+    public String searchDatabase(String personName){
+        String val="";
         SQLiteDatabase db = getWritableDatabase();
-        String query =  "SELECT " + COLUMN_PERSON_NUMBER + " FROM " + TABLE_PERSONS +
+        String query =  " SELECT " + COLUMN_PERSON_NUMBER + " FROM " + TABLE_PERSONS +
                         " WHERE " + COLUMN_PERSON_NAME + " =\"" + personName + "\";";
         Cursor c =db.rawQuery(query,null);
+        c.moveToFirst();
         if(!c.isAfterLast())
-            if(c.getInt(c.getColumnIndex("personName"))!=0) val=Integer.valueOf(c.getString(c.getColumnIndex(COLUMN_PERSON_NUMBER)));
+            if(!c.getString(c.getColumnIndex(COLUMN_PERSON_NUMBER)).equals("")) val=c.getString(c.getColumnIndex(COLUMN_PERSON_NUMBER));
         return val;
     }
 
-    public PersonDetails[] databaseToArray(){
+    public List<PersonDetails> databaseToList(){
         SQLiteDatabase db = getReadableDatabase();
-        String columns[] = {COLUMN_PERSON_NAME,COLUMN_PERSON_NUMBER};
         String query = " SELECT * FROM " + TABLE_PERSONS + ";";
         //Cursor c = db.query(TABLE_PERSONS,columns,null,null,null,null,null);
         Cursor c = db.rawQuery(query,null);
         c.moveToFirst();
-        PersonDetails[] dbPersons = new PersonDetails[c.getCount()];
-        for(int i=0;!c.isAfterLast();i++){
-            if(c.getString(c.getColumnIndex(COLUMN_PERSON_NAME))!=null && c.getString(c.getColumnIndex(COLUMN_PERSON_NUMBER))!=null){
-                dbPersons[i].setPersonName(c.getString(c.getColumnIndex(COLUMN_PERSON_NAME)));
-                dbPersons[i].setPersonNumber(Integer.valueOf(c.getString(c.getColumnIndex(COLUMN_PERSON_NUMBER))));
+        List<PersonDetails> dbPersons=new ArrayList<>();
+        while(!c.isAfterLast()){
+            if(c.getString(c.getColumnIndex(COLUMN_PERSON_NAME))!=null){
+                PersonDetails temp = new PersonDetails();
+                temp.setPersonName(c.getString(c.getColumnIndex(COLUMN_PERSON_NAME)));
+                temp.setPersonNumber(c.getString(c.getColumnIndex(COLUMN_PERSON_NUMBER)));
+                dbPersons.add(temp);
             }
             c.moveToNext();
         }
@@ -86,5 +91,6 @@ public class MyDBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         String query =  " DELETE FROM " + TABLE_PERSONS +
                         " WHERE " + COLUMN_PERSON_NAME + " =\"" + personName + "\";";
+        db.execSQL(query);
     }
 }

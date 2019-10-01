@@ -1,83 +1,187 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".MainActivity"
-    tools:showIn="@layout/activity_main"
     >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="Given CET Papers"
-        android:layout_marginTop="10dp"
-        android:textSize="25sp"
-        android:textColor="@android:color/holo_blue_dark"
-        android:textStyle="bold"
-        />
-
-    <EditText
-        android:id="@+id/myInputName"
-        android:layout_width="200dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="20dp"
-        android:hint="Name"
-        android:layout_marginTop="60dp"
-        />
-
-    <EditText
-        android:id="@+id/myNumber"
-        android:hint="Number"
-        android:layout_marginTop="60dp"
-        android:layout_marginStart="250dp"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
-        />
-
-    <Button
-        android:id="@+id/addButton"
-        android:onClick="addButtonClick"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add"
-        android:layout_below="@id/myInputName"
-        android:layout_marginTop="30dp"
-        android:layout_marginStart="30dp"
-        />
-
-    <Button
-        android:id="@+id/findButton"
-        android:onClick="findRecord"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Find"
-        android:layout_below="@id/myInputName"
-        android:layout_marginTop="30dp"
-        android:layout_marginStart="150dp"
-        />
-
-    <Button
-        android:id="@+id/deleteButton"
-        android:onClick="deleteButtonClick"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="delete"
-        android:layout_below="@id/myInputName"
-        android:layout_marginStart="270dp"
-        android:layout_marginTop="30dp"
-        />
-
-    <ListView
-        android:id="@+id/myListView"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_margin="10dp"
-        android:layout_height="match_parent"
-        android:layout_below="@id/addButton"
-        android:background="#F0D7"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:background="@color/colorPrimary"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:textColor="@android:color/white"
+            android:layout_height="wrap_content"
+            android:text="Record Keeper of "
+            android:textSize="20sp"
+            />
+
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="user"
+            android:id="@+id/userName"
+            android:textColor="@android:color/white"
+            android:layout_marginStart="0dp"
+            android:layout_marginLeft="0dp"
+            android:textSize="20sp"
+            />
+
+        <TextView
+            android:layout_width="40dp"
+            android:id="@+id/version"
+            android:layout_height="wrap_content"
+            android:text="v9"
+            android:textColor="@android:color/white"
+            android:layout_marginStart="0dp"
+            android:layout_marginLeft="0dp"
+            android:textSize="20sp"
+            />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@android:color/holo_blue_light"
+        android:layout_height="wrap_content"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="MADE BY ROHNAK AGARWAL"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:id="@+id/creator"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:padding="2dp"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        >
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="wrap_content"
+            app:helperText="Enter name of record"
+            android:layout_height="wrap_content">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/myInputName"
+            android:layout_width="180dp"
+            android:lines="1"
+            android:layout_height="40dp"
+            android:hint="Name of record"
+            />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="wrap_content"
+            app:helperText="Enter quantity of record"
+            android:layout_height="wrap_content">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/myNumber"
+            android:hint="Quantity"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
+            android:lines="1"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            />
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/addButton"
+            android:onClick="addButtonClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add"
+            />
+
+        <Button
+            android:id="@+id/updateButton"
+            android:onClick="updateButtonClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="update"
+            />
+
+        <Button
+            android:id="@+id/clearButton"
+            android:onClick="clearButtonClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="clear"
+            />
+
+
+        <Button
+            android:id="@+id/delButton"
+            android:onClick="deleteButtonClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delete"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
+        android:padding="2dp"
+        android:background="@android:color/holo_orange_dark"
+        android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="200dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:textColor="@android:color/white"
+        android:layout_height="wrap_content"
+        android:text="Field Name"
+        android:textSize="20sp"
         />
-</RelativeLayout>
+    <TextView
+        android:layout_width="100dp"
+        android:textColor="@android:color/white"
+        android:layout_height="wrap_content"
+        android:text="Quantity"
+        android:textSize="20sp"
+        />
+    </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/myList"
+            android:layout_width="match_parent"
+            android:layout_margin="7dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray"
+            />
+
+</LinearLayout>

@@ -4,33 +4,68 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
-public class CustomAdapter extends ArrayAdapter<PersonDetails> {
-    public CustomAdapter(@NonNull Context context, PersonDetails[] personDetails) {
-        super(context,R.layout.row_layout,personDetails);
+import java.util.List;
+
+public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
+
+    List<PersonDetails> mPersons;
+    Context context;
+    OnRecordClickListener onRecordClickListener;
+
+    public CustomAdapter(List<PersonDetails> mPersons, Context context, OnRecordClickListener onRecordClickListener) {
+        this.mPersons = mPersons;
+        this.context = context;
+        this.onRecordClickListener=onRecordClickListener;
     }
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        LayoutInflater myInflater = LayoutInflater.from(getContext());
-        View CustomView = myInflater.inflate(R.layout.row_layout, parent,false);
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.row_layout,parent,false);
+        return new ViewHolder(view,onRecordClickListener);
+    }
 
-        //get a reference
-        PersonDetails singleItem = getItem(position);
-        TextView myText = CustomView.findViewById(R.id.myName);
-        TextView myNo = CustomView.findViewById(R.id.myNo);
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        PersonDetails personDetails=mPersons.get(position);
+        holder.Number.setText(personDetails.getPersonNumber());
+        holder.Name.setText(personDetails.getPersonName());
+    }
 
-        if(singleItem != null) {
-            myText.setText(singleItem.getPersonName());
-            myNo.setText(singleItem.getPersonNumber());
+    @Override
+    public int getItemCount() {
+        return mPersons.size();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        public TextView Name,Number;
+
+        OnRecordClickListener onRecordClickListener;
+
+        public ViewHolder(@NonNull View itemView, OnRecordClickListener onRecordClickListener) {
+            super(itemView);
+            Name=itemView.findViewById(R.id.myName);
+            Number=itemView.findViewById(R.id.myNo);
+
+            this.onRecordClickListener=onRecordClickListener;
+
+            itemView.setOnClickListener(this);
+
         }
-        return CustomView;
+
+        @Override
+        public void onClick(View view) {
+            onRecordClickListener.onRecordClick(getAdapterPosition());
+        }
+    }
+
+    public interface OnRecordClickListener{
+        void onRecordClick(int position);
     }
 }
