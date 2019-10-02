@@ -40,7 +40,7 @@
             android:layout_width="40dp"
             android:id="@+id/version"
             android:layout_height="wrap_content"
-            android:text="v9"
+            android:text="vN"
             android:textColor="@android:color/white"
             android:layout_marginStart="0dp"
             android:layout_marginLeft="0dp"
@@ -82,7 +82,9 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/myInputName"
             android:layout_width="180dp"
-            android:lines="1"
+            android:inputType="text"
+            android:minLines="1"
+            android:maxLines="1"
             android:layout_height="40dp"
             android:hint="Name of record"
             />
@@ -95,10 +97,12 @@
             android:layout_height="wrap_content">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/myNumber"
+            android:inputType="text"
             android:hint="Quantity"
             android:layout_marginLeft="5dp"
             android:layout_marginStart="5dp"
-            android:lines="1"
+            android:minLines="1"
+            android:maxLines="1"
             android:layout_width="150dp"
             android:layout_height="40dp"
             />
