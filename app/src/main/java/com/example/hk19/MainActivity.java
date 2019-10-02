@@ -13,9 +13,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.hk19.decorator.SpacingItemDecorator;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
@@ -63,7 +66,12 @@ public class MainActivity extends Activity implements CustomAdapter.OnRecordClic
         creator = findViewById(R.id.creator);
         version=findViewById(R.id.version);
 
-        version.setText("v9");
+        SpacingItemDecorator spacingItemDecorator = new SpacingItemDecorator(10);
+        myList.addItemDecoration(spacingItemDecorator);
+
+        new ItemTouchHelper(itemTouchHelper).attachToRecyclerView(myList);
+
+        version.setText("v10");
 
         Bundle bundle = getIntent().getExtras();
         if (bundle==null){return;}
@@ -245,4 +253,17 @@ public class MainActivity extends Activity implements CustomAdapter.OnRecordClic
             Toast.makeText(this, "Field name EMPTY !!!", Toast.LENGTH_SHORT).show();
         }
     }
+
+    ItemTouchHelper.SimpleCallback itemTouchHelper = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            dbHandler.deletePerson(persons.get(viewHolder.getAdapterPosition()).getPersonName());
+            printDatabase();
+        }
+    };
 }
