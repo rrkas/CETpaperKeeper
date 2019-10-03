@@ -71,7 +71,7 @@ public class MainActivity extends Activity implements CustomAdapter.OnRecordClic
 
         new ItemTouchHelper(itemTouchHelper).attachToRecyclerView(myList);
 
-        version.setText("v11");
+        version.setText("v12");
 
         Bundle bundle = getIntent().getExtras();
         if (bundle==null){return;}
