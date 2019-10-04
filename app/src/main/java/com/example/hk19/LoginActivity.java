@@ -4,12 +4,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -25,17 +29,39 @@ public class LoginActivity extends AppCompatActivity {
         userNameInput = findViewById(R.id.userNameInput);
         btnLogin = findViewById(R.id.btnLogin);
         version=findViewById(R.id.dispVersion);
+        version.setText("v13");
 
+        userNameInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(userNameInput.length()>15){
+                    userNameInput.setTextColor(Color.RED);
+                }else{
+                    userNameInput.setTextColor(Color.GREEN);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
 
         SharedPreferences sharedPreferences =  getSharedPreferences("userNames",MODE_PRIVATE);
         String userName = sharedPreferences.getString("userNames","def");
         if(!userName.equals("def")) {
             Intent intent = new Intent(this, MainActivity.class);
             intent.putExtra("userNames", userName);
+            intent.putExtra("curr_version",version.getText().toString());
             startActivity(intent);
             finish();
         }
-        version.setText("v9");
+
     }
 
     public void loginMe(View view) {
@@ -51,6 +77,7 @@ public class LoginActivity extends AppCompatActivity {
             editor.apply();
             Intent intent = new Intent(this,MainActivity.class);
             intent.putExtra("userNames",userNameInput.getText().toString());
+            intent.putExtra("curr_version",version.getText().toString());
             startActivity(intent);
             finish();
         }

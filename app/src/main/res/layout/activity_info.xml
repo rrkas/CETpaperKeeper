@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    tools:context=".InfoActivity">
+
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="50dp"
+        android:src="@drawable/record_keeper_icon"
+        />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="vN"
+        android:textSize="30sp"
+        android:id="@+id/curr_version"
+        android:textStyle="bold"
+        android:textColor="@android:color/holo_blue_light"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Made by :\nRohnak Agarwal"
+        android:layout_marginTop="30dp"
+        android:textSize="20sp"
+        android:paddingLeft="40dp"
+        android:paddingStart="40dp"
+        android:paddingEnd="40dp"
+        android:textStyle="bold"
+        android:textColor="@android:color/holo_blue_dark"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Contact :\nrrka79wal@gmail.com"
+        android:layout_marginTop="20dp"
+        android:textSize="20sp"
+        android:paddingLeft="40dp"
+        android:paddingStart="40dp"
+        android:paddingEnd="40dp"
+        android:textColor="@android:color/holo_orange_dark"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="All suggestions are welcomed."
+        android:layout_marginTop="30dp"
+        android:textSize="17sp"
+        android:gravity="center"
+        android:textColor="@android:color/black"
+        />
+
+</LinearLayout>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -12,190 +12,221 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:padding="5dp"
-        android:background="@color/colorPrimary"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
         >
 
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/record_keeper_icon"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:textColor="@android:color/white"
-            android:layout_height="wrap_content"
-            android:text="Record Keeper of "
-            android:textSize="20sp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"
-            />
-
-        <TextView
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:text="user"
-            android:id="@+id/userName"
-            android:textColor="@android:color/white"
-            android:layout_marginStart="0dp"
-            android:layout_marginLeft="0dp"
-            android:textSize="20sp"
-            />
-
-        <TextView
-            android:layout_width="30dp"
-            android:id="@+id/version"
-            android:layout_height="wrap_content"
-            android:text="vN"
-            android:textColor="@android:color/white"
-            android:layout_marginStart="0dp"
-            android:layout_marginLeft="0dp"
-            android:textSize="20sp"
-            />
-
-    </LinearLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:background="@android:color/holo_blue_light"
-        android:layout_height="wrap_content"
-        >
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:padding="2dp"
+            android:background="@color/colorPrimary"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="MADE BY ROHNAK AGARWAL"
+            android:gravity="center_vertical"
+            >
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/record_keeper_icon"
+                android:onClick="getInfo"
+                android:id="@+id/icon_pic"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:textColor="@android:color/white"
+                android:layout_height="wrap_content"
+                android:text="Record Keeper of "
+                android:textSize="18sp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                />
+
+            <TextView
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:text="user"
+                android:id="@+id/userName"
+                android:textColor="#FFF280"
+                android:textSize="18sp"
+                android:fontFamily="sans-serif"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:id="@+id/version"
+                android:layout_height="wrap_content"
+                android:text="vN"
+                android:textColor="@android:color/white"
+                android:textSize="17sp"
+                />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_help_outline_black_24dp"
+                android:onClick="guideMe"
+                android:background="@color/colorPrimary"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:background="@android:color/holo_blue_light"
+            android:layout_height="wrap_content"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="MADE BY ROHNAK AGARWAL"
+                android:gravity="center"
+                android:textColor="@android:color/white"
+                android:id="@+id/creator"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:padding="2dp"
             android:gravity="center"
-            android:textColor="@android:color/white"
-            android:id="@+id/creator"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            />
+            android:layout_height="wrap_content"
+            >
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="wrap_content"
+                app:helperText="Enter name of record"
+                android:layout_height="wrap_content">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/myInputName"
+                    android:layout_width="180dp"
+                    android:inputType="text"
+                    android:minLines="1"
+                    android:maxLines="1"
+                    android:layout_height="40dp"
+                    android:hint="Name of record"
+                    />
 
-    </RelativeLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:padding="2dp"
-        android:gravity="center"
-        android:layout_height="wrap_content"
-        >
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="wrap_content"
-            app:helperText="Enter name of record"
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="wrap_content"
+                app:helperText="Enter quantity of record"
+                android:layout_height="wrap_content">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/myNumber"
+                    android:inputType="text"
+                    android:hint="Quantity"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
+                    android:minLines="1"
+                    android:maxLines="1"
+                    android:layout_width="150dp"
+                    android:layout_height="40dp"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
             android:layout_height="wrap_content">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/myInputName"
-            android:layout_width="180dp"
-            android:inputType="text"
-            android:minLines="1"
-            android:maxLines="1"
-            android:layout_height="40dp"
-            android:hint="Name of record"
-            />
+            <Button
+                android:id="@+id/addButton"
+                android:onClick="addButtonClick"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add"
+                />
 
-        </com.google.android.material.textfield.TextInputLayout>
+            <Button
+                android:id="@+id/updateButton"
+                android:onClick="updateButtonClick"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="update"
+                />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="wrap_content"
-            app:helperText="Enter quantity of record"
+            <Button
+                android:id="@+id/clearButton"
+                android:onClick="clearButtonClick"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="clear"
+                />
+
+
+            <Button
+                android:id="@+id/delButton"
+                android:onClick="deleteButtonClick"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Delete"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
+            android:padding="2dp"
+            android:background="@android:color/holo_orange_dark"
             android:layout_height="wrap_content">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/myNumber"
-            android:inputType="text"
-            android:hint="Quantity"
-            android:layout_marginLeft="5dp"
-            android:layout_marginStart="5dp"
-            android:minLines="1"
-            android:maxLines="1"
-            android:layout_width="150dp"
-            android:layout_height="40dp"
-            />
-        </com.google.android.material.textfield.TextInputLayout>
-    </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:paddingTop="2dp"
-        android:paddingBottom="2dp"
-        android:layout_height="wrap_content">
-        <Button
-            android:id="@+id/addButton"
-            android:onClick="addButtonClick"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add"
-            />
-
-        <Button
-            android:id="@+id/updateButton"
-            android:onClick="updateButtonClick"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="update"
-            />
-
-        <Button
-            android:id="@+id/clearButton"
-            android:onClick="clearButtonClick"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="clear"
-            />
-
-
-        <Button
-            android:id="@+id/delButton"
-            android:onClick="deleteButtonClick"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Delete"
-            />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginEnd="10dp"
-        android:padding="2dp"
-        android:background="@android:color/holo_orange_dark"
-        android:layout_height="wrap_content">
-
-    <TextView
-        android:layout_width="200dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
-        android:textColor="@android:color/white"
-        android:layout_height="wrap_content"
-        android:text="Field Name"
-        android:textSize="20sp"
-        />
-    <TextView
-        android:layout_width="100dp"
-        android:textColor="@android:color/white"
-        android:layout_height="wrap_content"
-        android:text="Quantity"
-        android:textSize="20sp"
-        />
-    </LinearLayout>
+            <TextView
+                android:layout_width="200dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:textColor="@android:color/white"
+                android:layout_height="wrap_content"
+                android:text="Field Name"
+                android:textSize="20sp"
+                />
+            <TextView
+                android:layout_width="100dp"
+                android:textColor="@android:color/white"
+                android:layout_height="wrap_content"
+                android:text="Quantity"
+                android:textSize="20sp"
+                />
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/myList"
             android:layout_width="match_parent"
             android:layout_margin="7dp"
             android:layout_height="match_parent"
-            android:background="@android:color/darker_gray"
+            android:background="@android:color/white"
+            android:visibility="visible"
             />
+    </LinearLayout>
 
-</LinearLayout>
+    <com.getbase.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_undo"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="10dp"
+        app:colorNormal="@android:color/holo_blue_bright"
+        android:background="@android:color/holo_blue_light"
+        android:id="@+id/undo"
+        android:visibility="visible"
+        />
+
+</RelativeLayout>

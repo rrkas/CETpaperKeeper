@@ -19,6 +19,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hk19.decorator.SpacingItemDecorator;
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
@@ -36,12 +38,18 @@ public class MainActivity extends Activity implements CustomAdapter.OnRecordClic
     MyDBHandler dbHandler;
     RecyclerView.Adapter myAdapter;
     TextView userName,version;
+    FloatingActionButton undo;
 
     @Override
     public void onBackPressed() {
         if(counter==1){
             lastClick=System.currentTimeMillis();
             Toast.makeText(this, "Click again to EXIT", Toast.LENGTH_SHORT).show();
+            myInputName.setText("");
+            myInputNumber.setText("");
+            myInputNumber.clearFocus();
+            myInputName.clearFocus();
+            printDatabase();
             counter=2;
         }else{
             if (System.currentTimeMillis()-lastClick>=2000){
@@ -53,7 +61,6 @@ public class MainActivity extends Activity implements CustomAdapter.OnRecordClic
             finish();
         }
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,17 +72,16 @@ public class MainActivity extends Activity implements CustomAdapter.OnRecordClic
         persons=new ArrayList<>();
         creator = findViewById(R.id.creator);
         version=findViewById(R.id.version);
+        undo=findViewById(R.id.undo);
 
         SpacingItemDecorator spacingItemDecorator = new SpacingItemDecorator(10);
         myList.addItemDecoration(spacingItemDecorator);
 
         new ItemTouchHelper(itemTouchHelper).attachToRecyclerView(myList);
 
-        version.setText("v12");
+        version.setText(getIntent().getStringExtra("curr_version"));
 
-        Bundle bundle = getIntent().getExtras();
-        if (bundle==null){return;}
-        userName.setText(bundle.getString("userNames"));
+        userName.setText(getIntent().getStringExtra("userNames").toUpperCase());
 
         myList.setHasFixedSize(true);
         myList.setLayoutManager(new LinearLayoutManager(this));
@@ -91,11 +97,12 @@ public class MainActivity extends Activity implements CustomAdapter.OnRecordClic
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                printSearch();
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-                printSearch();
+
             }
         });
 
@@ -106,7 +113,6 @@ public class MainActivity extends Activity implements CustomAdapter.OnRecordClic
             }
         });
     }
-
     public void printSearch(){
         if(!myInputName.getText().toString().equals("")){
             List<PersonDetails> searchPersons =new ArrayList<>();
@@ -122,17 +128,16 @@ public class MainActivity extends Activity implements CustomAdapter.OnRecordClic
             myAdapter = new CustomAdapter(persons,MainActivity.this,MainActivity.this);
             myList.setAdapter(myAdapter);
         }
-
     }
-
     private void printDatabase() {
         persons=dbHandler.databaseToList();
         myAdapter = new CustomAdapter(persons,this,this);
         myList.setAdapter(myAdapter);
         myInputName.setText("");
+        myInputName.clearFocus();
         myInputNumber.setText("");
+        myInputNumber.clearFocus();
     }
-
     public void updateButtonClick(View view) {
         String inputText = myInputName.getText().toString();
         String inputNum = myInputNumber.getText().toString();
@@ -146,23 +151,29 @@ public class MainActivity extends Activity implements CustomAdapter.OnRecordClic
                 }
             }
             if(found){
-                if (!inputNum.equals("0")) {
-                    try{
-                        double d = Double.valueOf(inputNum);
+                try{
+                    double d = Double.valueOf(inputNum);
+                    if (d!=0) {
                         dbHandler.updatePerson(inputText, inputNum);
-                        printDatabase();
-                    }catch(Exception e){
-                        Toast.makeText(this, "Invalid quantity !!!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Record updated.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        dbHandler.deletePerson(inputText);
+                        Toast.makeText(this, "Record deleted.", Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    dbHandler.deletePerson(inputText);
                     printDatabase();
+                }catch(Exception e){
+                    Toast.makeText(this, "Invalid quantity !!!", Toast.LENGTH_SHORT).show();
                 }
             }else{
                 try{
                     double d = Double.valueOf(inputNum);
-                    dbHandler.addPerson(new PersonDetails(inputText,inputNum));
-                    printDatabase();
+                    if(d!=0) {
+                        dbHandler.addPerson(new PersonDetails(inputText, inputNum));
+                        Toast.makeText(this, "Record added.", Toast.LENGTH_SHORT).show();
+                        printDatabase();
+                    }else{
+                        Toast.makeText(this, "No quantty to update!!", Toast.LENGTH_SHORT).show();
+                    }
                 }catch(Exception e){
                     Toast.makeText(this, "Invalid quantity !!!", Toast.LENGTH_SHORT).show();
                 }
@@ -171,7 +182,6 @@ public class MainActivity extends Activity implements CustomAdapter.OnRecordClic
             Toast.makeText(this, "Blank field(s) !!!", Toast.LENGTH_SHORT).show();
         }
     }
-
     public void addButtonClick(View view) {
         String name=myInputName.getText().toString();
         String num=myInputNumber.getText().toString();
@@ -188,20 +198,27 @@ public class MainActivity extends Activity implements CustomAdapter.OnRecordClic
             if(!found) {
                 try{
                     double val = Double.valueOf(person.getPersonNumber());
-                    dbHandler.addPerson(person);
-                    printDatabase();
+                    if(val!=0) {
+                        Toast.makeText(this, "Record added.", Toast.LENGTH_SHORT).show();
+                        dbHandler.addPerson(person);
+                        printDatabase();
+                    }else{
+                        Toast.makeText(this, "Number is ZERO.", Toast.LENGTH_SHORT).show();
+                    }
                 } catch (Exception e){
-                    Toast.makeText(this, "Invalid number of pages !!!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Invalid number !!!", Toast.LENGTH_SHORT).show();
                     myInputNumber.setText("");
                 }
             }else{
                 double prevValue=Double.valueOf(dbHandler.searchDatabase(person.getPersonName()));
                 try {
                     double newValue = Double.valueOf(person.getPersonNumber());
-                    double updatedValue=prevValue+newValue;
+                    double updatedValue = prevValue + newValue;
                     if(updatedValue!=0) {
+                        Toast.makeText(this, "Record updated.", Toast.LENGTH_SHORT).show();
                         dbHandler.updatePerson(person.getPersonName(), String.valueOf(updatedValue));
                     }else{
+                        Toast.makeText(this, "Record deleted.", Toast.LENGTH_SHORT).show();
                         dbHandler.deletePerson(person.getPersonName());
                     }
                 } catch (Exception e){
@@ -217,7 +234,6 @@ public class MainActivity extends Activity implements CustomAdapter.OnRecordClic
                 Toast.makeText(this, "Number is blank !!", Toast.LENGTH_SHORT).show();
         }
     }
-
     @Override
     public void onRecordClick(int position) {
         PersonDetails personDetails=persons.get(position);
@@ -225,14 +241,13 @@ public class MainActivity extends Activity implements CustomAdapter.OnRecordClic
         myInputNumber.setText(personDetails.getPersonNumber());
 
     }
-
     public void clearButtonClick(View view) {
         myInputName.setText("");
         myInputNumber.setText("");
         myInputName.clearFocus();
         myInputNumber.clearFocus();
+        Toast.makeText(this, "Fields cleared.", Toast.LENGTH_SHORT).show();
     }
-
     public void deleteButtonClick(View view) {
         String inputText = myInputName.getText().toString();
         boolean found = false;
@@ -245,8 +260,10 @@ public class MainActivity extends Activity implements CustomAdapter.OnRecordClic
                 }
             }
             if(found){
-                    dbHandler.deletePerson(inputText);
-                    printDatabase();
+                dbHandler.deletePerson(inputText);
+                Toast.makeText(this, "Record deleted.", Toast.LENGTH_SHORT).show();
+                undo.setVisibility(View.VISIBLE);
+                printDatabase();
             }else{
                 Toast.makeText(this, "No such record to delete !!!", Toast.LENGTH_SHORT).show();
             }
@@ -254,7 +271,6 @@ public class MainActivity extends Activity implements CustomAdapter.OnRecordClic
             Toast.makeText(this, "Field name EMPTY !!!", Toast.LENGTH_SHORT).show();
         }
     }
-
     ItemTouchHelper.SimpleCallback itemTouchHelper = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -267,4 +283,14 @@ public class MainActivity extends Activity implements CustomAdapter.OnRecordClic
             printDatabase();
         }
     };
+    public void getInfo(View view) {
+        Intent intent = new Intent(this,InfoActivity.class);
+        intent.putExtra("version",version.getText().toString());
+        startActivity(intent);
+    }
+    public void guideMe(View view) {
+        Intent intent = new Intent(this,GuideActivity.class);
+        intent.putExtra("version",version.getText().toString());
+        startActivity(intent);
+    }
 }
