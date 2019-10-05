@@ -29,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
         userNameInput = findViewById(R.id.userNameInput);
         btnLogin = findViewById(R.id.btnLogin);
         version=findViewById(R.id.dispVersion);
-        version.setText("v13");
+        version.setText("v14");
 
         userNameInput.addTextChangedListener(new TextWatcher() {
             @Override

@@ -3,6 +3,7 @@ package com.example.hk19;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -10,21 +11,28 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hk19.decorator.SpacingItemDecorator;
-import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+
+import static android.view.View.GONE;
 
 public class MainActivity extends Activity implements CustomAdapter.OnRecordClickListener{
 
@@ -73,6 +81,23 @@ public class MainActivity extends Activity implements CustomAdapter.OnRecordClic
         creator = findViewById(R.id.creator);
         version=findViewById(R.id.version);
         undo=findViewById(R.id.undo);
+
+        undo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PersonDetails graved = getDeletedBack();
+                if(graved == null){
+                    Toast.makeText(MainActivity.this, "Last delete had been undone !!!", Toast.LENGTH_SHORT).show();
+                }else{
+                    dbHandler.addPerson(graved);
+                    printDatabase();
+                    //RelativeLayout.LayoutParams p =(RelativeLayout.LayoutParams) undo.getLayoutParams();
+                    //p.setAnchorId(View.NO_ID);
+                    //undo.setLayoutParams(p);
+                    undo.hide();
+                }
+            }
+        });
 
         SpacingItemDecorator spacingItemDecorator = new SpacingItemDecorator(10);
         myList.addItemDecoration(spacingItemDecorator);
@@ -131,6 +156,7 @@ public class MainActivity extends Activity implements CustomAdapter.OnRecordClic
     }
     private void printDatabase() {
         persons=dbHandler.databaseToList();
+        sortPersons();
         myAdapter = new CustomAdapter(persons,this,this);
         myList.setAdapter(myAdapter);
         myInputName.setText("");
@@ -141,11 +167,13 @@ public class MainActivity extends Activity implements CustomAdapter.OnRecordClic
     public void updateButtonClick(View view) {
         String inputText = myInputName.getText().toString();
         String inputNum = myInputNumber.getText().toString();
+        PersonDetails delPerson=new PersonDetails();
         boolean found = false;
         if(!inputText.equals("")){
             for(PersonDetails personDetails:persons){
                 if(personDetails.getPersonName().toLowerCase().equals(inputText.toLowerCase())){
                     inputText=personDetails.getPersonName();
+                    delPerson=personDetails;
                     found=true;
                     break;
                 }
@@ -157,6 +185,12 @@ public class MainActivity extends Activity implements CustomAdapter.OnRecordClic
                         dbHandler.updatePerson(inputText, inputNum);
                         Toast.makeText(this, "Record updated.", Toast.LENGTH_SHORT).show();
                     } else {
+                        SharedPreferences del = getSharedPreferences("deleted",MODE_PRIVATE);
+                        SharedPreferences.Editor editor = del.edit();
+                        editor.putString("name",delPerson.getPersonName());
+                        editor.putString("num",delPerson.getPersonNumber());
+                        editor.apply();
+                        undo.show();
                         dbHandler.deletePerson(inputText);
                         Toast.makeText(this, "Record deleted.", Toast.LENGTH_SHORT).show();
                     }
@@ -172,7 +206,7 @@ public class MainActivity extends Activity implements CustomAdapter.OnRecordClic
                         Toast.makeText(this, "Record added.", Toast.LENGTH_SHORT).show();
                         printDatabase();
                     }else{
-                        Toast.makeText(this, "No quantty to update!!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "No quantity to update!!", Toast.LENGTH_SHORT).show();
                     }
                 }catch(Exception e){
                     Toast.makeText(this, "Invalid quantity !!!", Toast.LENGTH_SHORT).show();
@@ -251,18 +285,26 @@ public class MainActivity extends Activity implements CustomAdapter.OnRecordClic
     public void deleteButtonClick(View view) {
         String inputText = myInputName.getText().toString();
         boolean found = false;
+        PersonDetails delPerson=new PersonDetails();
         if(!inputText.equals("")){
             for(PersonDetails personDetails:persons){
                 if(personDetails.getPersonName().toLowerCase().equals(inputText.toLowerCase())){
                     inputText=personDetails.getPersonName();
                     found=true;
+                    delPerson=personDetails;
                     break;
                 }
             }
             if(found){
+                SharedPreferences del = getSharedPreferences("deleted",MODE_PRIVATE);
+                SharedPreferences.Editor editor = del.edit();
+                editor.putString("name",delPerson.getPersonName());
+                editor.putString("num",delPerson.getPersonNumber());
+                editor.apply();
+                undo.show();
                 dbHandler.deletePerson(inputText);
                 Toast.makeText(this, "Record deleted.", Toast.LENGTH_SHORT).show();
-                undo.setVisibility(View.VISIBLE);
+                undo.show();
                 printDatabase();
             }else{
                 Toast.makeText(this, "No such record to delete !!!", Toast.LENGTH_SHORT).show();
@@ -279,7 +321,14 @@ public class MainActivity extends Activity implements CustomAdapter.OnRecordClic
 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-            dbHandler.deletePerson(persons.get(viewHolder.getAdapterPosition()).getPersonName());
+            PersonDetails delPerson = persons.get(viewHolder.getAdapterPosition());
+            SharedPreferences del = getSharedPreferences("deleted",MODE_PRIVATE);
+            SharedPreferences.Editor editor = del.edit();
+            editor.putString("name",delPerson.getPersonName());
+            editor.putString("num",delPerson.getPersonNumber());
+            editor.apply();
+            undo.show();
+            dbHandler.deletePerson(delPerson.getPersonName());
             printDatabase();
         }
     };
@@ -292,5 +341,37 @@ public class MainActivity extends Activity implements CustomAdapter.OnRecordClic
         Intent intent = new Intent(this,GuideActivity.class);
         intent.putExtra("version",version.getText().toString());
         startActivity(intent);
+    }
+    public PersonDetails getDeletedBack(){
+        PersonDetails personDetails=new PersonDetails();
+        SharedPreferences del = getSharedPreferences("deleted",MODE_PRIVATE);
+        if(del.getString("name","del").equals("del")){
+            return null;
+        }else{
+            personDetails.setPersonName(del.getString("name","defName"));
+            personDetails.setPersonNumber(del.getString("num","defNum"));
+            SharedPreferences.Editor editor=del.edit();
+            editor.putString("name","del");
+            editor.apply();
+            return personDetails;
+        }
+    }
+    public void sortPersons(){
+        Collections.sort(persons, new Comparator<PersonDetails>() {
+            @Override
+            public int compare(PersonDetails personDetails, PersonDetails t1) {
+                return personDetails.getPersonName().compareToIgnoreCase(t1.getPersonName());
+            }
+        });
+        int size = persons.size();
+        for(int i=0;i<size-1;i++){
+            for(int j=0;j<size-1-i;j++){
+                if(persons.get(i).getPersonName().compareToIgnoreCase(persons.get(j).getPersonName())>0){
+                    PersonDetails temp = persons.get(i);
+                    persons.set(i,persons.get(j));
+                    persons.set(j,temp);
+                }
+            }
+        }
     }
 }

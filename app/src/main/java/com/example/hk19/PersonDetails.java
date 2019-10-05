@@ -1,8 +1,6 @@
 package com.example.hk19;
 
-import androidx.recyclerview.widget.RecyclerView;
-
-public class PersonDetails extends RecyclerView.ItemDecoration {
+public class PersonDetails{
     private String personName;
     private String personNumber;
     public PersonDetails() {
