@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.EditText;
@@ -17,6 +20,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -34,7 +39,7 @@ import java.util.List;
 
 import static android.view.View.GONE;
 
-public class MainActivity extends Activity implements CustomAdapter.OnRecordClickListener{
+public class MainActivity extends AppCompatActivity implements CustomAdapter.OnRecordClickListener{
 
     public static int counter =0;
     public static long lastClick;
@@ -45,8 +50,10 @@ public class MainActivity extends Activity implements CustomAdapter.OnRecordClic
     RecyclerView myList;
     MyDBHandler dbHandler;
     RecyclerView.Adapter myAdapter;
-    TextView userName,version;
+    TextView version;
     FloatingActionButton undo;
+    String userName;
+    View sadReactor;
 
     @Override
     protected void onDestroy() {
@@ -87,7 +94,15 @@ public class MainActivity extends Activity implements CustomAdapter.OnRecordClic
         myInputName=findViewById(R.id.myInputName);
         myInputNumber=findViewById(R.id.myNumber);
         myList=findViewById(R.id.myList);
-        userName=findViewById(R.id.userName);
+
+        sadReactor = findViewById(R.id.sad_reactor);
+
+        userName = getIntent().getStringExtra("userNames").toUpperCase();
+        Toolbar toolbar = findViewById(R.id.main_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Record Keeper of "+userName);
+
+
         persons=new ArrayList<>();
         creator = findViewById(R.id.creator);
         version=findViewById(R.id.version);
@@ -105,8 +120,23 @@ public class MainActivity extends Activity implements CustomAdapter.OnRecordClic
                 PersonDetails graved = getDeletedBack();
                 if(graved == null){
                     Toast.makeText(MainActivity.this, "Last delete had been undone !!!", Toast.LENGTH_SHORT).show();
+                    undo.hide();
                 }else{
-                    dbHandler.addPerson(graved);
+                    boolean found = false;
+                    PersonDetails p = new PersonDetails();
+                    String name = graved.getPersonName();
+                    for(PersonDetails personDetails:persons){
+                        if(personDetails.getPersonName().toLowerCase().equals(name)){
+                            found=true;
+                            p = personDetails;
+                            break;
+                        }
+                    }
+                    if(found){
+                        dbHandler.updatePerson(graved.getPersonName(),p.getPersonNumber() + graved.getPersonNumber());
+                    }else{
+                        dbHandler.addPerson(graved);
+                    }
                     printDatabase();
                     undo.hide();
                 }
@@ -118,7 +148,7 @@ public class MainActivity extends Activity implements CustomAdapter.OnRecordClic
         new ItemTouchHelper(itemTouchHelper).attachToRecyclerView(myList);
 
         version.setText(LoginActivity.VERSION);
-        userName.setText(getIntent().getStringExtra("userNames").toUpperCase());
+
         myList.setHasFixedSize(true);
         myList.setLayoutManager(new LinearLayoutManager(this));
 
@@ -146,11 +176,11 @@ public class MainActivity extends Activity implements CustomAdapter.OnRecordClic
                 Toast.makeText(MainActivity.this, "Contact me : rrka79wal@gmail.com", Toast.LENGTH_LONG).show();
             }
         });
+
     }
     public void printSearch(){
         if(!myInputName.getText().toString().equals("")){
             List<PersonDetails> searchPersons =new ArrayList<>();
-
             for(PersonDetails personDetails:persons){
                 if(personDetails.getPersonName().toLowerCase().contains(myInputName.getText().toString().toLowerCase())){
                     searchPersons.add(personDetails);
@@ -177,6 +207,13 @@ public class MainActivity extends Activity implements CustomAdapter.OnRecordClic
         myInputName.clearFocus();
         myInputNumber.setText("");
         myInputNumber.clearFocus();
+        if(persons.size()==0){
+            sadReactor.setVisibility(View.VISIBLE);
+            myList.setVisibility(View.GONE);
+        }else{
+            sadReactor.setVisibility(View.GONE);
+            myList.setVisibility(View.VISIBLE);
+        }
     }
     public void updateButtonClick(View view){
         String inputText = myInputName.getText().toString();
@@ -299,7 +336,7 @@ public class MainActivity extends Activity implements CustomAdapter.OnRecordClic
     public void deleteButtonClick(View view){
         String inputText = myInputName.getText().toString();
         boolean found = false;
-        PersonDetails delPerson=new PersonDetails();
+        PersonDetails delPerson = new PersonDetails();
         if(!inputText.equals("")){
             for(PersonDetails personDetails:persons){
                 if(personDetails.getPersonName().toLowerCase().equals(inputText.toLowerCase())){
@@ -348,12 +385,10 @@ public class MainActivity extends Activity implements CustomAdapter.OnRecordClic
     };
     public void getInfo(View view){
         Intent intent = new Intent(this,InfoActivity.class);
-        intent.putExtra("version",version.getText().toString());
         startActivity(intent);
     }
-    public void guideMe(View view){
+    public void guideMe(){
         Intent intent = new Intent(this,GuideActivity.class);
-        intent.putExtra("version",version.getText().toString());
         startActivity(intent);
     }
     public PersonDetails getDeletedBack(){
@@ -369,5 +404,17 @@ public class MainActivity extends Activity implements CustomAdapter.OnRecordClic
             editor.apply();
             return personDetails;
         }
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu,menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId()==R.id.main_menu_help)
+            guideMe();
+        return super.onOptionsItemSelected(item);
     }
 }

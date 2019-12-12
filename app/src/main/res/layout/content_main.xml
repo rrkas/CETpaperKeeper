@@ -19,38 +19,25 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="horizontal"
-            android:padding="2dp"
             android:background="@color/colorPrimary"
-            android:layout_height="wrap_content"
+            android:layout_height="?attr/actionBarSize"
             android:gravity="center_vertical"
             >
 
             <ImageView
                 android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_height="match_parent"
                 android:src="@drawable/record_keeper_icon"
                 android:onClick="getInfo"
                 android:id="@+id/icon_pic"
                 />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:textColor="@android:color/white"
-                android:layout_height="wrap_content"
-                android:text="Record Keeper of "
-                android:textSize="18sp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginStart="5dp"
-                />
-
-            <TextView
-                android:layout_width="130dp"
-                android:layout_height="wrap_content"
-                android:text="user"
-                android:id="@+id/userName"
-                android:textColor="#FFF280"
-                android:textSize="18sp"
-                android:fontFamily="sans-serif"
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:titleTextColor="#fff"
+                app:title="Record kepper"
+                android:id="@+id/main_toolbar"
                 />
 
             <TextView
@@ -66,32 +53,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_help_outline_black_24dp"
-                android:onClick="guideMe"
                 android:background="@color/colorPrimary"
                 android:layout_marginStart="5dp"
                 android:layout_marginLeft="5dp"
                 />
 
         </LinearLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:background="@android:color/holo_blue_light"
-            android:layout_height="wrap_content"
-            >
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="MADE BY ROHNAK AGARWAL"
-                android:gravity="center"
-                android:textColor="@android:color/white"
-                android:id="@+id/creator"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                />
-
-        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -205,14 +172,56 @@
                 />
         </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/myList"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_margin="7dp"
-            android:layout_height="match_parent"
-            android:background="@android:color/white"
-            android:visibility="visible"
-            />
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:id="@+id/sad_reactor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_centerInParent="true">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/ic_sentiment_dissatisfied_black_24dp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Empty list"
+                    android:textAlignment="center"
+                    android:textSize="25sp"
+                    android:textColor="#000"/>
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/myList"
+                android:layout_width="match_parent"
+                android:layout_margin="7dp"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                android:background="#fff"
+                android:layout_above="@id/creator"
+                tools:listitem="@layout/row_layout"
+                />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:text="MADE BY ROHNAK AGARWAL"
+                android:gravity="center"
+                android:background="#8093ff"
+                android:textColor="@android:color/white"
+                android:id="@+id/creator"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                />
+        </RelativeLayout>
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -222,12 +231,13 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_margin="10dp"
+        android:layout_marginBottom="30dp"
+        android:layout_marginEnd="10dp"
         app:colorNormal="@android:color/holo_blue_bright"
         app:backgroundTint="#80ff84"
         app:maxImageSize="40dp"
         android:id="@+id/undo"
         android:visibility="gone"
-        />
+        android:layout_marginRight="10dp" />
 
 </RelativeLayout>

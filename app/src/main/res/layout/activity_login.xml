@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:layout_marginTop="60dp"
-        android:text="CET Paper Keeper"
+        android:text="Record Keeper"
         android:textSize="30sp"
         android:textStyle="bold"
         />
@@ -36,6 +36,7 @@
         android:padding="20sp"
         android:layout_height="wrap_content">
         <EditText
+            android:inputType="text"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:hint="User Name"

@@ -21,13 +21,14 @@ public class LoginActivity extends AppCompatActivity {
     Button btnLogin;
     TextView version;
 
-    public static final int VERSION = 15;
+    public static final String VERSION = "v15";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         userNameInput = findViewById(R.id.userNameInput);
         btnLogin = findViewById(R.id.btnLogin);
         version=findViewById(R.id.dispVersion);
@@ -41,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(userNameInput.length()>15){
+                if(userNameInput.length()>10){
                     userNameInput.setTextColor(Color.RED);
                 }else{
                     userNameInput.setTextColor(Color.GREEN);
@@ -66,10 +67,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void loginMe(View view) {
-        if(userNameInput.getText().toString().equals("")){
+        if(userNameInput.getText().toString().trim().equals("")){
             Toast.makeText(this, "Empty User Name !!!", Toast.LENGTH_LONG).show();
         }
-        else if(userNameInput.getText().toString().length()>16){
+        else if(userNameInput.getText().toString().length()>10){
             Toast.makeText(this, "User Name Too Long !!!", Toast.LENGTH_LONG).show();
         }else{
             SharedPreferences sharedPreferences = getSharedPreferences("userNames",MODE_PRIVATE);
