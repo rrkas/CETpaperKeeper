@@ -224,7 +224,8 @@
         android:layout_alignParentRight="true"
         android:layout_margin="10dp"
         app:colorNormal="@android:color/holo_blue_bright"
-        android:background="@android:color/holo_blue_light"
+        app:backgroundTint="#80ff84"
+        app:maxImageSize="40dp"
         android:id="@+id/undo"
         android:visibility="gone"
         />

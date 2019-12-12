@@ -13,9 +13,9 @@ public class GuideActivity extends AppCompatActivity {
         setContentView(R.layout.activity_guide);
 
         TextView guide_version = findViewById(R.id.guide_version);
-        guide_version.setText(getIntent().getStringExtra("version"));
+        guide_version.setText(LoginActivity.VERSION);
 
         TextView guide_version_two = findViewById(R.id.guide_version_two);
-        guide_version_two.setText(getIntent().getStringExtra("version"));
+        guide_version_two.setText(LoginActivity.VERSION);
     }
 }

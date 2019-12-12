@@ -21,6 +21,8 @@ public class LoginActivity extends AppCompatActivity {
     Button btnLogin;
     TextView version;
 
+    public static final int VERSION = 15;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +31,7 @@ public class LoginActivity extends AppCompatActivity {
         userNameInput = findViewById(R.id.userNameInput);
         btnLogin = findViewById(R.id.btnLogin);
         version=findViewById(R.id.dispVersion);
-        version.setText("v14");
+        version.setText(VERSION);
 
         userNameInput.addTextChangedListener(new TextWatcher() {
             @Override
@@ -57,7 +59,6 @@ public class LoginActivity extends AppCompatActivity {
         if(!userName.equals("def")) {
             Intent intent = new Intent(this, MainActivity.class);
             intent.putExtra("userNames", userName);
-            intent.putExtra("curr_version",version.getText().toString());
             startActivity(intent);
             finish();
         }
@@ -77,7 +78,6 @@ public class LoginActivity extends AppCompatActivity {
             editor.apply();
             Intent intent = new Intent(this,MainActivity.class);
             intent.putExtra("userNames",userNameInput.getText().toString());
-            intent.putExtra("curr_version",version.getText().toString());
             startActivity(intent);
             finish();
         }

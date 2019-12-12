@@ -49,6 +49,17 @@ public class MainActivity extends Activity implements CustomAdapter.OnRecordClic
     FloatingActionButton undo;
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        SharedPreferences preferences = getSharedPreferences("undoShow",MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        if(undo.isShown())
+            editor.putBoolean("undoShow",true);
+        else
+            editor.putBoolean("undoShow",false);
+        editor.apply();
+    }
+    @Override
     public void onBackPressed() {
         if(counter==1){
             lastClick=System.currentTimeMillis();
@@ -82,7 +93,13 @@ public class MainActivity extends Activity implements CustomAdapter.OnRecordClic
         version=findViewById(R.id.version);
         undo=findViewById(R.id.undo);
 
-        undo.setOnClickListener(new View.OnClickListener() {
+        SharedPreferences undoShow = getSharedPreferences("undoShow",MODE_PRIVATE);
+        if(undoShow.getBoolean("undoShow",false))
+            undo.show();
+        else
+            undo.hide();
+
+        undo.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 PersonDetails graved = getDeletedBack();
@@ -91,30 +108,23 @@ public class MainActivity extends Activity implements CustomAdapter.OnRecordClic
                 }else{
                     dbHandler.addPerson(graved);
                     printDatabase();
-                    //RelativeLayout.LayoutParams p =(RelativeLayout.LayoutParams) undo.getLayoutParams();
-                    //p.setAnchorId(View.NO_ID);
-                    //undo.setLayoutParams(p);
                     undo.hide();
                 }
             }
         });
-
         SpacingItemDecorator spacingItemDecorator = new SpacingItemDecorator(10);
         myList.addItemDecoration(spacingItemDecorator);
 
         new ItemTouchHelper(itemTouchHelper).attachToRecyclerView(myList);
 
-        version.setText(getIntent().getStringExtra("curr_version"));
-
+        version.setText(LoginActivity.VERSION);
         userName.setText(getIntent().getStringExtra("userNames").toUpperCase());
-
         myList.setHasFixedSize(true);
         myList.setLayoutManager(new LinearLayoutManager(this));
 
         dbHandler = new MyDBHandler(this,null,null,1);
         printDatabase();
-
-        myInputName.addTextChangedListener(new TextWatcher() {
+        myInputName.addTextChangedListener(new TextWatcher(){
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -130,8 +140,7 @@ public class MainActivity extends Activity implements CustomAdapter.OnRecordClic
 
             }
         });
-
-        creator.setOnClickListener(new View.OnClickListener() {
+        creator.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 Toast.makeText(MainActivity.this, "Contact me : rrka79wal@gmail.com", Toast.LENGTH_LONG).show();
@@ -154,9 +163,14 @@ public class MainActivity extends Activity implements CustomAdapter.OnRecordClic
             myList.setAdapter(myAdapter);
         }
     }
-    private void printDatabase() {
+    private void printDatabase(){
         persons=dbHandler.databaseToList();
-        sortPersons();
+        Collections.sort(persons, new Comparator<PersonDetails>() {
+            @Override
+            public int compare(PersonDetails personDetails, PersonDetails t1) {
+                return personDetails.getPersonName().compareToIgnoreCase(t1.getPersonName());
+            }
+        });
         myAdapter = new CustomAdapter(persons,this,this);
         myList.setAdapter(myAdapter);
         myInputName.setText("");
@@ -164,7 +178,7 @@ public class MainActivity extends Activity implements CustomAdapter.OnRecordClic
         myInputNumber.setText("");
         myInputNumber.clearFocus();
     }
-    public void updateButtonClick(View view) {
+    public void updateButtonClick(View view){
         String inputText = myInputName.getText().toString();
         String inputNum = myInputNumber.getText().toString();
         PersonDetails delPerson=new PersonDetails();
@@ -216,7 +230,7 @@ public class MainActivity extends Activity implements CustomAdapter.OnRecordClic
             Toast.makeText(this, "Blank field(s) !!!", Toast.LENGTH_SHORT).show();
         }
     }
-    public void addButtonClick(View view) {
+    public void addButtonClick(View view){
         String name=myInputName.getText().toString();
         String num=myInputNumber.getText().toString();
         if(!name.equals("") && !num.equals("")) {
@@ -269,20 +283,20 @@ public class MainActivity extends Activity implements CustomAdapter.OnRecordClic
         }
     }
     @Override
-    public void onRecordClick(int position) {
+    public void onRecordClick(int position){
         PersonDetails personDetails=persons.get(position);
         myInputName.setText(personDetails.getPersonName());
         myInputNumber.setText(personDetails.getPersonNumber());
 
     }
-    public void clearButtonClick(View view) {
+    public void clearButtonClick(View view){
         myInputName.setText("");
         myInputNumber.setText("");
         myInputName.clearFocus();
         myInputNumber.clearFocus();
         Toast.makeText(this, "Fields cleared.", Toast.LENGTH_SHORT).show();
     }
-    public void deleteButtonClick(View view) {
+    public void deleteButtonClick(View view){
         String inputText = myInputName.getText().toString();
         boolean found = false;
         PersonDetails delPerson=new PersonDetails();
@@ -332,12 +346,12 @@ public class MainActivity extends Activity implements CustomAdapter.OnRecordClic
             printDatabase();
         }
     };
-    public void getInfo(View view) {
+    public void getInfo(View view){
         Intent intent = new Intent(this,InfoActivity.class);
         intent.putExtra("version",version.getText().toString());
         startActivity(intent);
     }
-    public void guideMe(View view) {
+    public void guideMe(View view){
         Intent intent = new Intent(this,GuideActivity.class);
         intent.putExtra("version",version.getText().toString());
         startActivity(intent);
@@ -354,24 +368,6 @@ public class MainActivity extends Activity implements CustomAdapter.OnRecordClic
             editor.putString("name","del");
             editor.apply();
             return personDetails;
-        }
-    }
-    public void sortPersons(){
-        Collections.sort(persons, new Comparator<PersonDetails>() {
-            @Override
-            public int compare(PersonDetails personDetails, PersonDetails t1) {
-                return personDetails.getPersonName().compareToIgnoreCase(t1.getPersonName());
-            }
-        });
-        int size = persons.size();
-        for(int i=0;i<size-1;i++){
-            for(int j=0;j<size-1-i;j++){
-                if(persons.get(i).getPersonName().compareToIgnoreCase(persons.get(j).getPersonName())>0){
-                    PersonDetails temp = persons.get(i);
-                    persons.set(i,persons.get(j));
-                    persons.set(j,temp);
-                }
-            }
         }
     }
 }

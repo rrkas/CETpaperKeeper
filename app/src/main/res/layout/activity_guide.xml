@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="#80C6FF"
     tools:context=".GuideActivity">
+
 
     <LinearLayout
         android:layout_margin="5dp"
@@ -50,194 +51,212 @@
         </LinearLayout>
 
     </LinearLayout>
-    <LinearLayout
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="3dp"
-        android:padding="5dp"
-        android:background="#B3E5FF"
-        android:gravity="center_vertical"
-        >
-        <ImageView
-            android:layout_marginLeft="30dp"
-            android:layout_marginStart="30dp"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/record_keeper_icon"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="App info button:\nIt shows the details of app."
-            android:layout_marginStart="50dp"
-            android:layout_marginLeft="50dp"
-            android:textColor="@android:color/black"
-            android:textSize="15sp"
-            />
-    </LinearLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="3dp"
-        android:padding="5dp"
-        android:background="#B3E5FF"
-        android:gravity="center_vertical"
-        >
-        <TextView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:text="vN"
-            android:textSize="20sp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginStart="30dp"
-            android:textColor="#3F51B5"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:id="@+id/guide_version_two"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="App version"
-            android:layout_toEndOf="@id/guide_version_two"
-            android:layout_toRightOf="@id/guide_version_two"
-            android:layout_marginStart="50dp"
-            android:layout_marginLeft="50dp"
-            android:textColor="@android:color/black"
-            android:textSize="15sp"
-            android:layout_centerVertical="true"
-            />
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="3dp"
-        android:padding="5dp"
-        android:background="#B3E5FF"
-        android:gravity="center_vertical"
-        >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="ADD button:\nIt adds a new record if doesn\'t exist\nMerges current value if record exists."
-            android:layout_marginStart="20dp"
-            android:layout_marginLeft="20dp"
-            android:textColor="@android:color/black"
-            android:textSize="15sp"
-            android:layout_centerVertical="true"
-            />
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="3dp"
-        android:padding="5dp"
-        android:background="#B3E5FF"
-        android:gravity="center_vertical"
-        >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="UPDATE buton:\nIt adds a new record if it doesn\'t exist\nIt adds a new record if no such record exists\nIt deletes the record whose value is updated to ZERO"
-            android:layout_marginStart="20dp"
-            android:layout_marginLeft="20dp"
-            android:textColor="@android:color/black"
-            android:textSize="15sp"
-            android:layout_centerVertical="true"
-            />
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="3dp"
-        android:padding="5dp"
-        android:background="#B3E5FF"
-        android:gravity="center_vertical"
-        >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="CLEAR button:\nIt clears all the input fields."
-            android:layout_marginStart="20dp"
-            android:layout_marginLeft="20dp"
-            android:textColor="@android:color/black"
-            android:textSize="15sp"
-            android:layout_centerVertical="true"
-            />
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="3dp"
-        android:padding="5dp"
-        android:background="#B3E5FF"
-        android:gravity="center_vertical"
-        >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="DELETE button:\nIt deletes the specified record."
-            android:layout_marginStart="20dp"
-            android:layout_marginLeft="20dp"
-            android:textColor="@android:color/black"
-            android:textSize="15sp"
-            android:layout_centerVertical="true"
-            />
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="3dp"
-        android:padding="5dp"
-        android:background="#B3E5FF"
-        android:gravity="center_vertical"
-        >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="SWIPING records:\nIt deletes the record swiped."
-            android:layout_marginStart="20dp"
-            android:layout_marginLeft="20dp"
-            android:textColor="@android:color/black"
-            android:textSize="15sp"
-            android:layout_centerVertical="true"
-            />
-    </RelativeLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="3dp"
-        android:padding="2dp"
-        android:background="#B3E5FF"
-        android:gravity="center_vertical"
-        >
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_undo"
-            android:layout_margin="2dp"
-            android:background="@android:color/holo_blue_light"
-            android:visibility="visible"
-            android:clickable="false"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="UNDO button:\nIt undos the last delete operation."
-            android:layout_marginStart="5dp"
-            android:layout_marginLeft="5dp"
-            android:textColor="@android:color/black"
-            android:textSize="15sp"
-            android:layout_centerVertical="true"
-            />
-    </LinearLayout>
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="3dp"
+                android:padding="5dp"
+                android:background="#B3E5FF"
+                android:gravity="center_vertical"
+                >
+                <ImageView
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/record_keeper_icon"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="App info button:\nIt shows the details of app."
+                    android:layout_marginStart="50dp"
+                    android:layout_marginLeft="50dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp"
+                    />
+            </LinearLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="3dp"
+                android:padding="5dp"
+                android:background="#B3E5FF"
+                android:gravity="center_vertical"
+                >
+                <TextView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:text="vN"
+                    android:textSize="20sp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginStart="30dp"
+                    android:textColor="#3F51B5"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:id="@+id/guide_version_two"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="App version"
+                    android:layout_toEndOf="@id/guide_version_two"
+                    android:layout_toRightOf="@id/guide_version_two"
+                    android:layout_marginStart="50dp"
+                    android:layout_marginLeft="50dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp"
+                    android:layout_centerVertical="true"
+                    />
+            </RelativeLayout>
+            <RelativeLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="3dp"
+                android:padding="5dp"
+                android:background="#B3E5FF"
+                android:gravity="center_vertical"
+                >
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ADD button:\nIt adds a new record if doesn\'t exist.\nMerges current value with previous if record exists."
+                    android:layout_marginStart="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp"
+                    android:layout_centerVertical="true"
+                    />
+            </RelativeLayout>
+            <RelativeLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="3dp"
+                android:padding="5dp"
+                android:background="#B3E5FF"
+                android:gravity="center_vertical"
+                >
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="UPDATE buton:\nIt adds a new record if no such record exists.\nIt updates the value of existing record.\nIt deletes the record whose value is updated to ZERO."
+                    android:layout_marginStart="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp"
+                    android:layout_centerVertical="true"
+                    />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="3dp"
+                android:padding="5dp"
+                android:background="#B3E5FF"
+                android:gravity="center_vertical"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="CLEAR button:\nIt clears all the input fields."
+                    android:layout_marginStart="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp"
+                    android:layout_centerVertical="true"
+                    />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="3dp"
+                android:padding="5dp"
+                android:background="#B3E5FF"
+                android:gravity="center_vertical"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="DELETE button:\nIt deletes the specified record."
+                    android:layout_marginStart="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp"
+                    android:layout_centerVertical="true"
+                    />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="3dp"
+                android:padding="5dp"
+                android:background="#B3E5FF"
+                android:gravity="center_vertical"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SWIPING records:\nIt deletes the record swiped."
+                    android:layout_marginStart="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp"
+                    android:layout_centerVertical="true"
+                    />
+            </RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="3dp"
+                android:padding="2dp"
+                android:background="#B3E5FF"
+                android:gravity="center_vertical"
+                >
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_undo"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_margin="10dp"
+                    app:colorNormal="@android:color/holo_blue_bright"
+                    app:backgroundTint="#80ff84"
+                    app:maxImageSize="40dp"
+                    android:id="@+id/undo"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="UNDO button:\nIt undos the last delete operation."
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp"
+                    android:layout_centerVertical="true"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>
